@@ -2,19 +2,23 @@ package dev.naspo.fortnitelobbymusicplayer
 
 import javazoom.jl.player.Player
 import java.io.InputStream
+import kotlin.jvm.javaClass
 
 fun main() {
-    val mp3FileName = "Fortnite_Classic_Lobby_Music.mp3"
-    try {
-        val stream: InputStream = object{}.javaClass.classLoader.getResourceAsStream(mp3FileName)
-            ?: error("Audio file not found.")
+    val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
+    play(classicFortniteSoundtrackFileName)
+}
 
-        stream.use {
-            val player = Player(it)
-            println("Playing...")
-            player.play()
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
+fun play(audioFileName: String) {
+    // Getting InputStream of audio file.
+    // Creating an empty object{} to access the classpath (as an object is required, and we are not in one).
+    val inputStream: InputStream = object{}.javaClass.classLoader.getResourceAsStream(audioFileName)
+        ?: error("Audio file $audioFileName not found.")
+
+    // Playing audio...
+    inputStream.use {
+        val player = Player(it)
+        println("Playing $audioFileName.")
+        player.play()
     }
 }
