@@ -29,10 +29,12 @@ Once it's determined that you are in the lobby, it will start playing the music.
 *It's currently only a personal project that is built with the original game soundtrack.*
 
 # Usage
-1. Run the application from the command line...
-2. Play Fortnite and watch it work!
+1. Build the app with `./gradlew build`.
+2. Run the build output, the jar, (on Windows only) with `java -jar <output_file>.jar`.\
+(Requires Java installed on Windows).
+3. Play Fortnite and watch it work!
 
-# Tech Stack
+# Libraries Used
 ## Tesseract OCR
 Tesseract is the Optical Character Recognition library (not natively available to the JVM) which has been made 
 available to the JVM via Tess4J.
@@ -40,3 +42,7 @@ available to the JVM via Tess4J.
 - [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) 
 - [Tess4J Homepage](https://tess4j.sourceforge.net/)
 - [Tess4J Maven Repo](https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j)
+
+## JLayer
+mp3 player library for the JVM.\
+https://mvnrepository.com/artifact/javazoom/jlayer
