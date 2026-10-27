@@ -1,11 +1,11 @@
-# Fortnite Lobby Music Player
+# Fortnite Lobby Music Player [IN DEVELOPMENT]
 
 A program that detects when you're in the Fortnite lobby and plays your desired music.
 
 # Why?
 I'm an OG Fortnite player and I wanted to set my lobby music to the classic Fortnite soundtrack.\
 I was surprised to see that I didn't have it in my locker. This was because in Chapter 1 Season 10, for some\
-unimaginable reason, Epic stupidly decided to put the original game soundtrack in the battle pass, making it forever\
+unimaginable reason, Epic decided to put the original game soundtrack in the battle pass, making it forever\
 exclusive to those who purchased the battle pass back then.
 
 I had purchased every battle pass in Chapter 1 except for the one in season 10, because that was the one of the worst\
@@ -14,7 +14,7 @@ seasons in Fortnite history, and is where I quit the game for a while.
 I can't believe that Epic Games would paywall and exclusivize the original game soundtrack. For crying out loud\
 its music! Your game's classic soundtrack!
 
-So, I decided to make this application to be able to play the classic game soundtrack in my lobby.\
+Anyway, I decided to make this application to be able to play the classic game soundtrack in my lobby.\
 (And it can technically play any other music too).
 
 # How It Works
@@ -29,9 +29,13 @@ Once it's determined that you are in the lobby, it will start playing the music.
 *It's currently only a personal project that is built with the original game soundtrack.*
 
 # Usage
+**Requirements:**
+- Runs on Windows only.
+- Java installed on the system.
+
+**Steps:**
 1. Build the app with `./gradlew build`.
-2. Run the build output, the jar, (on Windows only) with `java -jar <output_file>.jar`.\
-(Requires Java installed on Windows).
+2. Run the build output (the jar) with `java -jar <output_file>.jar`.\
 3. Play Fortnite and watch it work!
 
 # Libraries Used

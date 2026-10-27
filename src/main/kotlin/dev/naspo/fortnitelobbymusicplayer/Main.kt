@@ -10,9 +10,11 @@ import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
 
 fun main() {
+    print(System.getProperty("os.name"))
+
     val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
 //    play(classicFortniteSoundtrackFileName)
-    testOCR()
+//    testOCR()
 }
 
 fun play(audioFileName: String) {
@@ -33,13 +35,13 @@ fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStre
         ?.use { ImageIO.read(it) }
         ?: error("Test screenshot file does not exist.")
 
-fun extractTessData() {
+fun extractTessDatsa() {
     val tessDataDir = File(System.getProperty("user.home"), "tessdata")
-    if (!tessDataDir.exists()) {
+    if (!tessDataDir.exists()) { 
         tessDataDir.mkdirs()
     }
 
-    
+
 }
 
 fun testOCR() {
