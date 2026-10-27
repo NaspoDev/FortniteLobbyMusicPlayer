@@ -8,14 +8,21 @@ import java.io.File
 import java.io.InputStream
 import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
+import kotlin.system.exitProcess
 
 fun main() {
-    print(System.getProperty("os.name"))
+    // Must be running on Windows.
+    if (!isOnWindows()) {
+        print("Must be running on Windows.")
+        exitProcess(0)
+    }
 
     val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
 //    play(classicFortniteSoundtrackFileName)
 //    testOCR()
 }
+
+fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
 
 fun play(audioFileName: String) {
     // Getting InputStream of audio file.
