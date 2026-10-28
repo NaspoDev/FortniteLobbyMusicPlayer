@@ -11,30 +11,18 @@ import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
 
 fun main() {
-    // Must be running on Windows.
-    if (!isOnWindows()) {
-        print("Must be running on Windows.")
-        exitProcess(0)
-    }
+    performPlatformCheck()
 
     val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
-//    play(classicFortniteSoundtrackFileName)
-//    testOCR()
 }
 
-fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
+// If not on Windows, terminate the program.
+private fun performPlatformCheck() {
+    fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
 
-fun play(audioFileName: String) {
-    // Getting InputStream of audio file.
-    // Creating an empty object{} to access the classpath (as an object is required, and we are not in one).
-    val inputStream: InputStream = object{}.javaClass.classLoader.getResourceAsStream(audioFileName)
-        ?: error("Audio file $audioFileName not found.")
-
-    // Playing audio...
-    inputStream.use {
-        val player = Player(it)
-        println("Playing $audioFileName.")
-        player.play()
+    if (!isOnWindows()) {
+        print("Fortnite Lobby Music Player must be running on Windows.")
+        exitProcess(0)
     }
 }
 
