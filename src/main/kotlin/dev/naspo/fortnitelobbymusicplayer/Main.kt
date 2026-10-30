@@ -10,10 +10,11 @@ import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
 
+const val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
+
 fun main() {
     performPlatformCheck()
 
-    val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
 }
 
 // If not on Windows, terminate the program.
@@ -26,18 +27,11 @@ private fun performPlatformCheck() {
     }
 }
 
+// TEMP - Testing OCR stuff
+
 fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStream("Fortnite_Lobby_Test.jpg")
         ?.use { ImageIO.read(it) }
         ?: error("Test screenshot file does not exist.")
-
-fun extractTessDatsa() {
-    val tessDataDir = File(System.getProperty("user.home"), "tessdata")
-    if (!tessDataDir.exists()) { 
-        tessDataDir.mkdirs()
-    }
-
-
-}
 
 fun testOCR() {
     val tesseract = Tesseract()
