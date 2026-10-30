@@ -33,7 +33,7 @@ fun initOCR() {
 }
 
 /**
- * Deletes the temporary OCR data files written to the disk.
+ * Delete the temporary OCR data files written to the disk.
  */
 fun runOCRCleanup() {
     tessDataDir.deleteIfExists()

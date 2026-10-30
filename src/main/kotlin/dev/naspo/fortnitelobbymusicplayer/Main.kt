@@ -1,11 +1,8 @@
 package dev.naspo.fortnitelobbymusicplayer
 
-import javazoom.jl.player.Player
 import net.sourceforge.tess4j.Tesseract
 import net.sourceforge.tess4j.TesseractException
 import java.awt.image.BufferedImage
-import java.io.File
-import java.io.InputStream
 import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
@@ -14,7 +11,7 @@ const val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
 
 fun main() {
     performPlatformCheck()
-
+    registerShutdownHook()
 }
 
 // If not on Windows, terminate the program.
@@ -22,9 +19,18 @@ private fun performPlatformCheck() {
     fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
 
     if (!isOnWindows()) {
-        print("Fortnite Lobby Music Player must be running on Windows.")
+        println("Fortnite Lobby Music Player must be running on Windows.")
         exitProcess(0)
     }
+}
+
+/**
+ * Register's a shutdown hook to execute logic upon program shutdown.
+ */
+private fun registerShutdownHook() {
+    Runtime.getRuntime().addShutdownHook(Thread {
+        runOCRCleanup()
+    })
 }
 
 // TEMP - Testing OCR stuff
