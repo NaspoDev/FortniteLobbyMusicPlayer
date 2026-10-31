@@ -8,15 +8,15 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.system.exitProcess
 
-const val programName: String = "Fortnite Lobby Music Player"
+const val appName: String = "Fortnite Lobby Music Player"
 val logger = KotlinLogging.logger { }
 
 fun main() {
-    // Program init
+    // App init
     performPlatformCheck()
     registerShutdownHook()
     initOCR()
-    logger.info { "$programName initialized!" }
+    logger.info { "$appName initialized!" }
 
     // TODO: Temp
     val result = doOCR(loadFile())
@@ -45,8 +45,9 @@ private fun performPlatformCheck() {
  */
 private fun registerShutdownHook() {
     Runtime.getRuntime().addShutdownHook(Thread {
-        logger.info { "Terminating $programName. Goodbye!" }
+        logger.info { "Terminating $appName..." }
         runOCRCleanup()
+        logger.info { "$appName terminated. Goodbye!" }
     })
 }
 

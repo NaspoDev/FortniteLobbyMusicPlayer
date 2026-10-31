@@ -8,17 +8,13 @@ import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
-import javax.imageio.ImageIO
+import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.createDirectories
-import kotlin.io.path.deleteIfExists
+import kotlin.io.path.deleteRecursively
 
 // Logic for working with our OCR, Tesseract.
-
-/** File representing the `tessdata/` directory on disk. */
-private val tessDataDir: Path get() = Path(System.getProperty("user.home"), "FortniteLobbyMusicPlayer", "tessdata")
-private const val TRAINED_DATA_FILE_NAME = "eng.traineddata"
 
 val tesseract = Tesseract()
 
@@ -31,19 +27,22 @@ val tesseract = Tesseract()
  * You can call [runOCRCleanup] when done with the OCR to delete this data from disk.
  */
 fun initOCR() {
-    tessDataDir.createDirectories()
+    AppPaths.tessDataDir.createDirectories()
 
     // Get the Tesseract trained data file bundled with the program from the classpath.
     // Creating an empty object{} to access the classpath (as an object is required, and we are not in one).
-    val inputStream: InputStream = object{}.javaClass.classLoader.getResourceAsStream("tessdata/$TRAINED_DATA_FILE_NAME")
-        ?: error("Could not create InputStream for tessdata/$TRAINED_DATA_FILE_NAME from classpath.")
+    val inputStream: InputStream = object{}.javaClass.classLoader.getResourceAsStream(AppPaths.TRAINED_DATA_FILE_RESOURCE_PATH)
+        ?: error("Could not create InputStream for ${AppPaths.TRAINED_DATA_FILE_RESOURCE_PATH} from classpath.")
 
     // Write that to the disk in the tessdata directory.
     inputStream.use {
-        Files.copy(it, tessDataDir.resolve(TRAINED_DATA_FILE_NAME), StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(
+            it,
+            AppPaths.tessDataDir.resolve(AppPaths.TRAINED_DATA_FILE_NAME),
+            StandardCopyOption.REPLACE_EXISTING)
     }
 
-    tesseract.setDatapath(tessDataDir.absolutePathString())
+    tesseract.setDatapath(AppPaths.tessDataDir.absolutePathString())
     logger.info { "OCR initialized." }
 }
 
@@ -63,8 +62,8 @@ fun doOCR(image: BufferedImage): Result<String> {
 /**
  * Delete the temporary OCR data files written to the disk.
  */
+@OptIn(ExperimentalPathApi::class)  // deleteRecursively is experimental at the time of writing this.
 fun runOCRCleanup() {
     logger.info { "Running OCR cleanup." }
-    // TODO: this doesnt work. I think it can only delete the dir if its empty.
-    tessDataDir.deleteIfExists()
+    AppPaths.appDataDir.deleteRecursively()
 }
