@@ -65,5 +65,6 @@ fun doOCR(image: BufferedImage): Result<String> {
  */
 fun runOCRCleanup() {
     logger.info { "Running OCR cleanup." }
+    // TODO: this doesnt work. I think it can only delete the dir if its empty.
     tessDataDir.deleteIfExists()
 }
