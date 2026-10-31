@@ -7,11 +7,15 @@ import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
 
-const val classicFortniteSoundtrackFileName = "Fortnite_Classic_Lobby_Music.mp3"
+const val classicFortniteSoundtrackFileName = "Fortnite_OG_Classic.mp3"
 
 fun main() {
     performPlatformCheck()
     registerShutdownHook()
+
+    // OCR
+    initOCR()
+    testOCR()
 }
 
 // If not on Windows, terminate the program.
@@ -31,22 +35,4 @@ private fun registerShutdownHook() {
     Runtime.getRuntime().addShutdownHook(Thread {
         runOCRCleanup()
     })
-}
-
-// TEMP - Testing OCR stuff
-
-fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStream("Fortnite_Lobby_Test.jpg")
-        ?.use { ImageIO.read(it) }
-        ?: error("Test screenshot file does not exist.")
-
-fun testOCR() {
-    val tesseract = Tesseract()
-    tesseract.setDatapath("src/main/resources/tessdata")
-
-    try {
-        val result: String = tesseract.doOCR(loadFile())
-        println(result)
-    } catch (e: TesseractException) {
-        println(e.message)
-    }
 }

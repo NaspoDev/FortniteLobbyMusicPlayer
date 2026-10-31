@@ -1,11 +1,16 @@
 package dev.naspo.fortnitelobbymusicplayer
 
+import net.sourceforge.tess4j.Tesseract
+import net.sourceforge.tess4j.TesseractException
+import java.awt.image.BufferedImage
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
+import javax.imageio.ImageIO
 import kotlin.io.path.Path
 import kotlin.io.path.deleteIfExists
+import kotlin.io.path.name
 
 // Logic for working with our OCR, Tesseract.
 
@@ -37,4 +42,23 @@ fun initOCR() {
  */
 fun runOCRCleanup() {
     tessDataDir.deleteIfExists()
+}
+
+// TEMP - TEST OCR
+
+fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStream("Fortnite_Lobby_Test.jpg")
+    ?.use { ImageIO.read(it) }
+    ?: error("Test screenshot file does not exist.")
+
+fun testOCR() {
+    println("before we test OCR here is the path: ${tessDataDir.name}")
+//    val tesseract = Tesseract()
+//    tesseract.setDatapath(tessDataDir.name)
+//
+//    try {
+//        val result: String = tesseract.doOCR(loadFile())
+//        println(result)
+//    } catch (e: TesseractException) {
+//        println(e.message)
+//    }
 }
