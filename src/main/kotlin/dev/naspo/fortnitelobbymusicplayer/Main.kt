@@ -1,5 +1,6 @@
 package dev.naspo.fortnitelobbymusicplayer
 
+import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
 import dev.naspo.fortnitelobbymusicplayer.image.doOCR
 import dev.naspo.fortnitelobbymusicplayer.image.initOCR
 import dev.naspo.fortnitelobbymusicplayer.image.runOCRCleanup
@@ -15,11 +16,11 @@ fun main() {
     // App init
     performPlatformCheck()
     registerShutdownHook()
-    initOCR()
+    OCREngine.initOCR()
     logger.info { "$appName initialized!" }
 
     // TODO: Temp
-    val result = doOCR(loadFile())
+    val result = OCREngine.doOCR(loadFile())
 
     result.fold(
         onSuccess = { println(it) },
@@ -46,7 +47,7 @@ private fun performPlatformCheck() {
 private fun registerShutdownHook() {
     Runtime.getRuntime().addShutdownHook(Thread {
         logger.info { "Terminating $appName..." }
-        runOCRCleanup()
+        OCREngine.runOCRCleanup()
         logger.info { "$appName terminated. Goodbye!" }
     })
 }
