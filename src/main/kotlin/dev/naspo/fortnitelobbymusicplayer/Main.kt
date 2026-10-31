@@ -1,13 +1,14 @@
 package dev.naspo.fortnitelobbymusicplayer
 
+import dev.naspo.fortnitelobbymusicplayer.image.doOCR
+import dev.naspo.fortnitelobbymusicplayer.image.initOCR
+import dev.naspo.fortnitelobbymusicplayer.image.runOCRCleanup
 import io.github.oshai.kotlinlogging.KotlinLogging
-import net.sourceforge.tess4j.Tesseract
-import net.sourceforge.tess4j.TesseractException
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
-import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
 
+const val programName: String = "Fortnite Lobby Music Player"
 val logger = KotlinLogging.logger { }
 
 fun main() {
@@ -15,9 +16,18 @@ fun main() {
     performPlatformCheck()
     registerShutdownHook()
     initOCR()
-    logger.info { "Fortnite Lobby Music Player initialized!" }
+    logger.info { "$programName initialized!" }
 
-    testOCR()
+    // TODO: Temp
+    val result = doOCR(loadFile())
+
+    result.fold(
+        onSuccess = { println(it) },
+        onFailure = {
+            logger.error { "Error performing OCR!" }
+            logger.error { result.exceptionOrNull()?.message }
+        }
+    )
 }
 
 // If not on Windows, terminate the program.
@@ -35,6 +45,12 @@ private fun performPlatformCheck() {
  */
 private fun registerShutdownHook() {
     Runtime.getRuntime().addShutdownHook(Thread {
+        logger.info { "Terminating $programName. Goodbye!" }
         runOCRCleanup()
     })
 }
+
+// TODO: temporary
+fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStream("Fortnite_Lobby_Test.jpg")
+    ?.use { ImageIO.read(it) }
+    ?: error("Test screenshot file does not exist.")
