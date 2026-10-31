@@ -1,5 +1,6 @@
 package dev.naspo.fortnitelobbymusicplayer.audio
 
+import dev.naspo.fortnitelobbymusicplayer.logger
 import javazoom.jl.player.Player
 import java.io.InputStream
 
@@ -16,7 +17,7 @@ fun playAudio(audioTrack: AudioTrack) {
     // Playing audio...
     inputStream.use {
         val player = Player(it)
-        println("Playing ${audioTrack.readableName}...")
+        logger.info { "Playing ${audioTrack.readableName}..." }
         player.play()
     }
 }

@@ -19,6 +19,9 @@ dependencies {
     // JLayer music player
     // Source: https://mvnrepository.com/artifact/javazoom/jlayer
     implementation("javazoom:jlayer:1.0.1")
+    // Logging library
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    implementation("org.slf4j:slf4j-simple:2.0.20")
 }
 
 kotlin {

@@ -1,5 +1,6 @@
 package dev.naspo.fortnitelobbymusicplayer
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.sourceforge.tess4j.Tesseract
 import net.sourceforge.tess4j.TesseractException
 import java.awt.image.BufferedImage
@@ -7,14 +8,15 @@ import javax.imageio.ImageIO
 import kotlin.jvm.javaClass
 import kotlin.system.exitProcess
 
-const val classicFortniteSoundtrackFileName = "Fortnite_OG_Classic.mp3"
+val logger = KotlinLogging.logger { }
 
 fun main() {
+    // Program init
     performPlatformCheck()
     registerShutdownHook()
-
-    // OCR
     initOCR()
+    logger.info { "Fortnite Lobby Music Player initialized!" }
+
     testOCR()
 }
 
@@ -23,8 +25,8 @@ private fun performPlatformCheck() {
     fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
 
     if (!isOnWindows()) {
-        println("Fortnite Lobby Music Player must be running on Windows.")
-        exitProcess(0)
+        logger.error { "Fortnite Lobby Music Player must be running on Windows." }
+        exitProcess(1)
     }
 }
 

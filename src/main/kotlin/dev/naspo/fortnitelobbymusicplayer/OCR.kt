@@ -9,6 +9,7 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import javax.imageio.ImageIO
 import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.name
 
@@ -51,7 +52,7 @@ fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStre
     ?: error("Test screenshot file does not exist.")
 
 fun testOCR() {
-    println("before we test OCR here is the path: ${tessDataDir.name}")
+    logger.info { "before we test OCR here is the path: ${tessDataDir.absolutePathString()}" }
 //    val tesseract = Tesseract()
 //    tesseract.setDatapath(tessDataDir.name)
 //
