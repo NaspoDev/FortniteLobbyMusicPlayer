@@ -14,12 +14,12 @@ seasons in Fortnite history, and is where I quit the game for a while.
 I can't believe that Epic Games would paywall and exclusivize the original game soundtrack. For crying out loud\
 its music! Your game's classic soundtrack!
 
-Anyway, I decided to make this application to be able to play the classic game soundtrack in my lobby.\
+Anyways, I decided to make this application to be able to play the classic game soundtrack in my lobby.\
 (And it can technically play any other music too).
 
 # How It Works
 The application will take a screenshot of your main screen every second, and process the image with an
-OCR to determine when you are in the lobby.
+OCR (Optical Character Recognition) engine to determine when you are in the lobby.
 
 It determines this by looking for text only found on the lobby, like the text from the navigation menu on top.
 (Ex. "Play", "Shop", etc...).
