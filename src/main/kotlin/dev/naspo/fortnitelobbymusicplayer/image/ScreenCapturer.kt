@@ -4,6 +4,6 @@ import java.awt.image.BufferedImage
 
 object ScreenCapturer {
     fun captureScreen(): BufferedImage {
-        // TODO: implementation
+        TODO()
     }
 }

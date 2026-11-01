@@ -1,9 +1,8 @@
 package dev.naspo.fortnitelobbymusicplayer
 
+import dev.naspo.fortnitelobbymusicplayer.audio.AudioPlayer
+import dev.naspo.fortnitelobbymusicplayer.audio.AudioTrack
 import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
-import dev.naspo.fortnitelobbymusicplayer.image.doOCR
-import dev.naspo.fortnitelobbymusicplayer.image.initOCR
-import dev.naspo.fortnitelobbymusicplayer.image.runOCRCleanup
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -19,16 +18,11 @@ fun main() {
     OCREngine.initOCR()
     logger.info { "$appName initialized!" }
 
-    // TODO: Temp
-    val result = OCREngine.doOCR(loadFile())
+    // TODO: GameStatePoller.beginPolling()
 
-    result.fold(
-        onSuccess = { println(it) },
-        onFailure = {
-            logger.error { "Error performing OCR!" }
-            logger.error { result.exceptionOrNull()?.message }
-        }
-    )
+    // testing
+    val audioPlayer = AudioPlayer(AudioTrack.FortniteOGClassic)
+    audioPlayer.play()
 }
 
 // If not on Windows, terminate the program.

@@ -31,8 +31,7 @@ object OCREngine {
         AppPaths.tessDataDir.createDirectories()
 
         // Get the Tesseract trained data file bundled with the program from the classpath.
-        // Creating an empty object{} to access the classpath (as an object is required, and we are not in one).
-        val inputStream: InputStream = object{}.javaClass.classLoader.getResourceAsStream(AppPaths.TRAINED_DATA_FILE_RESOURCE_PATH)
+        val inputStream: InputStream = javaClass.classLoader.getResourceAsStream(AppPaths.TRAINED_DATA_FILE_RESOURCE_PATH)
             ?: error("Could not create InputStream for ${AppPaths.TRAINED_DATA_FILE_RESOURCE_PATH} from classpath.")
 
         // Write that to the disk in the tessdata directory.

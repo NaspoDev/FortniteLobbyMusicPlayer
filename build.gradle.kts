@@ -1,7 +1,8 @@
 plugins {
     kotlin("jvm") version "2.4.20"
     application
-    id("com.gradleup.shadow") version "9.6.1"
+    id("com.gradleup.shadow") version "9.6.1"  // shadow plugin for fat jar
+    id("org.openjfx.javafxplugin") version "0.1.0"  // javafx plugin for javafx.media, for audio playback
 }
 
 group = "dev.naspo"
@@ -16,9 +17,6 @@ dependencies {
     // Tesseract OCR via Tess4J
     // Source: https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j
     implementation("net.sourceforge.tess4j:tess4j:5.20.0")
-    // JLayer music player
-    // Source: https://mvnrepository.com/artifact/javazoom/jlayer
-    implementation("javazoom:jlayer:1.0.1")
     // Logging library
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("org.slf4j:slf4j-simple:2.0.20")
@@ -34,6 +32,10 @@ application {
     mainClass.set("dev.naspo.fortnitelobbymusicplayer.MainKt")
 }
 
+javafx {
+    version = "27.0.1"
+    modules("javafx.media")
+}
 
 tasks {
     test {

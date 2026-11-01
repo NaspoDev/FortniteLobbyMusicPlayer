@@ -51,6 +51,7 @@ object GameStatePoller {
                 if (state != null && state != currentGameState) {
                     currentGameState = state
                     broadcastGameStateChange(state)
+                    logger.info { "Game state has changed to $state." }
                 }
                 delay(3.seconds)
             }
