@@ -103,7 +103,7 @@ object GameStatePoller {
     /**
      * Analyzes raw OCR result to determine the game state.
      */
-    private fun analyzeOCRResult(ocrResult: String): GameState {
+    internal fun analyzeOCRResult(ocrResult: String): GameState {
         val text = ocrResult.lowercase()
 
         fun hasAll(vararg words: String) = words.all {it in text}

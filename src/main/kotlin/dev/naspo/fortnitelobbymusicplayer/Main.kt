@@ -51,8 +51,3 @@ private fun registerShutdownHook() {
         }
     })
 }
-
-// TODO: temporary
-fun loadFile(): BufferedImage = object{}.javaClass.classLoader.getResourceAsStream("Fortnite_Lobby_Test.jpg")
-    ?.use { ImageIO.read(it) }
-    ?: error("Test screenshot file does not exist.")
