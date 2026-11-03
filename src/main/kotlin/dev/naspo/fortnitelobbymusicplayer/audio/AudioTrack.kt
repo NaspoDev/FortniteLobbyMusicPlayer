@@ -1,5 +1,7 @@
 package dev.naspo.fortnitelobbymusicplayer.audio
 
+// Note: Audio files must be in WAV format in order to work with our audio playing system!
+
 /**
  * An available audio track, bundled with the application.
  *
@@ -7,5 +9,5 @@ package dev.naspo.fortnitelobbymusicplayer.audio
  * @property fileName - The name of the audio file, including the file extension.
  */
 enum class AudioTrack(val readableName: String, val fileName: String) {
-    FortniteOGClassic("Fortnite OG Classic", "Fortnite_OG_Classic.mp3")
+    FortniteOGClassic("Fortnite OG Classic", "Fortnite_OG_Classic.wav")
 }

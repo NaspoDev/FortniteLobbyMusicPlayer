@@ -3,8 +3,9 @@ package dev.naspo.fortnitelobbymusicplayer.audio
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameState
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameStateSubscriber
 import dev.naspo.fortnitelobbymusicplayer.logger
-import java.io.InputStream
 import java.net.URL
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.Clip
 
 /**
  * Handles playing audio.
@@ -12,13 +13,19 @@ import java.net.URL
  * @property audioTrack The [AudioTrack] associated with this AudioPlayer.
  */
 class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
-    // Get audio file resource from classpath.
-    private val resource: URL = javaClass.classLoader.getResource(audioTrack.fileName)
-        ?: error("Audio file ${audioTrack.fileName} not found.")
+    // Using Java's built-in audio playing system.
+    // Using Clip, which loads the entire audio file into memory
+    private val clip: Clip = AudioSystem.getClip()
 
-    // MediaPlayer
-    private val media = Media(resource.toExternalForm())
-    private val mediaPlayer = MediaPlayer(media)
+    init {
+        // Get audio file resource from classpath.
+        val resource: URL = javaClass.classLoader.getResource(audioTrack.fileName)
+            ?: error("Audio file ${audioTrack.fileName} not found.")
+
+        // Setup Clip with AudioInputStream
+        val audioStream = AudioSystem.getAudioInputStream(resource)
+        clip.open(audioStream)
+    }
 
     /**
      * Play the audio track.
@@ -26,14 +33,14 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      */
     fun play() {
         logger.info { "Playing ${audioTrack.readableName}..." }
-        mediaPlayer.play()  // play() is non-blocking
+        clip.start()  // start() is non-blocking
     }
 
     /**
      * Pause the audio track.
      */
     fun pause() {
-        mediaPlayer.pause()
+        clip.stop()
     }
 
     /**
@@ -41,7 +48,8 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      * This operation resets playback to the start of the audio track.
      */
     fun stop() {
-        mediaPlayer.stop()
+        clip.stop()
+        clip.framePosition = 0
     }
 
     override fun onStateChange(gameState: GameState) {

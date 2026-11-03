@@ -4,9 +4,11 @@ import dev.naspo.fortnitelobbymusicplayer.audio.AudioPlayer
 import dev.naspo.fortnitelobbymusicplayer.audio.AudioTrack
 import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.delay
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.system.exitProcess
+import kotlin.time.Duration.Companion.seconds
 
 const val appName: String = "Fortnite Lobby Music Player"
 val logger = KotlinLogging.logger { }
