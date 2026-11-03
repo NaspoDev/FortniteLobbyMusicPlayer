@@ -3,8 +3,6 @@ package dev.naspo.fortnitelobbymusicplayer.audio
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameState
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameStateSubscriber
 import dev.naspo.fortnitelobbymusicplayer.logger
-import javafx.scene.media.Media
-import javafx.scene.media.MediaPlayer
 import java.io.InputStream
 import java.net.URL
 

@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm") version "2.4.20"
     application
     id("com.gradleup.shadow") version "9.6.1"  // shadow plugin for fat jar
-    id("org.openjfx.javafxplugin") version "0.1.0"  // javafx plugin for javafx.media, for audio playback
 }
 
 group = "dev.naspo"
@@ -30,11 +29,6 @@ kotlin {
 
 application {
     mainClass.set("dev.naspo.fortnitelobbymusicplayer.MainKt")
-}
-
-javafx {
-    version = "27.0.1"
-    modules("javafx.media")
 }
 
 tasks {
