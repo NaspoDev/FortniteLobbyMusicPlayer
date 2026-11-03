@@ -55,7 +55,7 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     override fun onStateChange(gameState: GameState) {
         when (gameState) {
             GameState.LOBBY -> play()
-            GameState.SHOP -> pause()
+            GameState.SHOP, GameState.LOCKER -> pause()
             GameState.UNKNOWN -> stop()
         }
     }

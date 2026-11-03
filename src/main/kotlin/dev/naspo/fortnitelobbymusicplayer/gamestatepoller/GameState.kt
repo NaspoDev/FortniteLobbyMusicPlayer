@@ -10,6 +10,9 @@ enum class GameState {
     /** In the item shop. */
     SHOP(),
 
+    /** In the locker */
+    LOCKER(),
+
     /** The exact state of the game is unknown/we don't care about it.  */
     UNKNOWN()
 }

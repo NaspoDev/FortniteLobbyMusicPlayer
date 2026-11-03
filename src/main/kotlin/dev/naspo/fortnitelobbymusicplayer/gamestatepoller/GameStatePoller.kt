@@ -116,6 +116,8 @@ object GameStatePoller {
             // Check if we are in the shop.
             if (ocrResult.contains("support-a-creator") && ocrResult.contains("about shop")) {
                 gameState = GameState.SHOP
+            } else if (ocrResult.contains("save loadout") || ocrResult.contains("view all loadouts")) {
+                gameState = GameState.LOCKER
             }
         } else {
             gameState = GameState.UNKNOWN
