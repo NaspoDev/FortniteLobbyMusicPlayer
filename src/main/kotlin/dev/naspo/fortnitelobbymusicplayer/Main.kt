@@ -21,8 +21,9 @@ suspend fun main() {
     performPlatformCheck()
     registerShutdownHook()
     OCREngine.initOCR()
-    val audioPlayer = AudioPlayer(AudioTrack.FortniteOGClassic)
-    GameStatePoller.subscribe(audioPlayer)
+    // Register GameStatePoller subscribers.
+    GameStatePoller.subscribe(AudioPlayer(AudioTrack.FortniteOGClassic))
+
     logger.info { "$appName initialized!" }
 
     // Start
