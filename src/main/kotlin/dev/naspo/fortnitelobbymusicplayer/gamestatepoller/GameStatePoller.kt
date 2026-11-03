@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -49,17 +50,34 @@ object GameStatePoller {
             while (isActive) {
                 val state = getCurrentGameState()
                 if (state != null && state != currentGameState) {
+                    logger.info { "Game state has changed to $state." }
                     currentGameState = state
                     broadcastGameStateChange(state)
-                    logger.info { "Game state has changed to $state." }
                 }
                 delay(3.seconds)
             }
         }
     }
 
+    /**
+     * Suspends until the polling job is finished.
+     */
+    suspend fun awaitPolling() {
+        pollingJob?.join()
+    }
+
+    /**
+     * Stops the polling process.
+     */
     fun stopPolling() {
         pollingJob?.cancel()
+    }
+
+    /**
+     * Stops the polling process and suspends until the process finishes cleaning up.
+     */
+    suspend fun stopPollingAndWait() {
+        pollingJob?.cancelAndJoin()
     }
 
     /**

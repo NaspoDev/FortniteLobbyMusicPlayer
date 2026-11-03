@@ -7,6 +7,7 @@ import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
 import dev.naspo.fortnitelobbymusicplayer.image.ScreenCapturer
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.system.exitProcess
@@ -15,16 +16,18 @@ import kotlin.time.Duration.Companion.seconds
 const val appName: String = "Fortnite Lobby Music Player"
 val logger = KotlinLogging.logger { }
 
-fun main() {
+suspend fun main() {
     // App init
     performPlatformCheck()
     registerShutdownHook()
     OCREngine.initOCR()
     val audioPlayer = AudioPlayer(AudioTrack.FortniteOGClassic)
+    GameStatePoller.subscribe(audioPlayer)
     logger.info { "$appName initialized!" }
 
     // Start
-//    GameStatePoller.beginPolling()
+    GameStatePoller.beginPolling()
+    GameStatePoller.awaitPolling()
 }
 
 // If not on Windows, terminate the program.
@@ -42,9 +45,12 @@ private fun performPlatformCheck() {
  */
 private fun registerShutdownHook() {
     Runtime.getRuntime().addShutdownHook(Thread {
-        logger.info { "Terminating $appName..." }
-        OCREngine.runOCRCleanup()
-        logger.info { "$appName terminated. Goodbye!" }
+        runBlocking {
+            logger.info { "Terminating $appName..." }
+            GameStatePoller.stopPollingAndWait()
+            OCREngine.runOCRCleanup()
+            logger.info { "$appName terminated. Goodbye!" }
+        }
     })
 }
 
