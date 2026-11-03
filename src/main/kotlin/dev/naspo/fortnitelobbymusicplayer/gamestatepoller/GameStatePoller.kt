@@ -104,26 +104,20 @@ object GameStatePoller {
      * Analyzes raw OCR result to determine the game state.
      */
     private fun analyzeOCRResult(ocrResult: String): GameState {
-        val ocrResult = ocrResult.lowercase()
-        var gameState = GameState.UNKNOWN
+        val text = ocrResult.lowercase()
 
-        // Lobby check
-        if (ocrResult.contains("play")
-            && ocrResult.contains("shop")
-            && ocrResult.contains("locker")) {
-            gameState = GameState.LOBBY
+        fun hasAll(vararg words: String) = words.all {it in text}
 
-            // Check if we are in the shop.
-            if (ocrResult.contains("support-a-creator") && ocrResult.contains("about shop")) {
-                gameState = GameState.SHOP
-            } else if (ocrResult.contains("save loadout") || ocrResult.contains("view all loadouts")) {
-                gameState = GameState.LOCKER
-            }
-        } else {
-            gameState = GameState.UNKNOWN
+        // If it doesn't have any of the main navbar lobby text, then return UNKNOWN.
+        if (!hasAll("play, shop, locker")) return GameState.UNKNOWN
+
+        // Otherwise we are in the lobby, but check if we are in a specific subscreen, like shop or locker.
+        return when {
+            hasAll("support-a-creator", "about shop") -> GameState.SHOP
+            hasAll("save loadout", "view all loadouts") -> GameState.LOCKER
+            // If its none of the specific lobby subscreens, then return LOBBY.
+            else -> GameState.LOBBY
         }
-
-        return gameState
     }
 
     /**
