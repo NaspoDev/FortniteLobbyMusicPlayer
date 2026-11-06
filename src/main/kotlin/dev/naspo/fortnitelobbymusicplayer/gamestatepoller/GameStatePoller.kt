@@ -12,7 +12,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.awt.image.BufferedImage
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.measureTime
 
 /**
  * Responsible for polling the live game state of Fortnite.
@@ -23,6 +25,7 @@ object GameStatePoller {
     private var gameStateSubscribers = mutableListOf<GameStateSubscriber>()
     private val scope = CoroutineScope(Dispatchers.Default)
     private var pollingJob: Job? = null
+    private val pollingRate: Duration = 1.seconds
 
     /**
      * Subscribes a [GameStateSubscriber] to receive game state updates via [GameStateSubscriber.onStateChange].
@@ -54,7 +57,7 @@ object GameStatePoller {
                     currentGameState = state
                     broadcastGameStateChange(state)
                 }
-                delay(3.seconds)
+                delay(pollingRate)
             }
         }
     }
