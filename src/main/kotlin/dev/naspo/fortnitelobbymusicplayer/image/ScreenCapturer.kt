@@ -11,9 +11,19 @@ import kotlin.io.path.Path
 object ScreenCapturer {
     private val toolkit = Toolkit.getDefaultToolkit()
     private val screenSize: Dimension = toolkit.screenSize
-    // Capture only the top 1/5 of the screen as that's all we need, and it's much more efficient. (Less
-    // for the OCR engine to process).
-    private val rectangle = Rectangle(Dimension(screenSize.width, screenSize.height / 5))
+    // The height of our screen captures.
+    // Screen captures should only capture 1/5 of the height of the screen as that's all we need at any
+    // given moment. And importantly, it's much more efficient (less for the OCR engine to process).
+    private val heightSlice = screenSize.height / 5
+    // A rectangle representing the top slice of the screen.
+    private val topSliceRectangle = Rectangle(screenSize.width, heightSlice)
+    // A rectangle representing the bottom slice of the screen.
+    private val bottomSliceRectangle = Rectangle(
+        0,
+        screenSize.height - heightSlice,
+        screenSize.width,
+        heightSlice
+    )
     private val robot = Robot()
 
     /**
