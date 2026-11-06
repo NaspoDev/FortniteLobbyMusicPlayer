@@ -109,7 +109,7 @@ object GameStatePoller {
         fun hasAll(vararg words: String) = words.all {it in text}
 
         // If it doesn't have any of the main navbar lobby text, then return UNKNOWN.
-        if (!hasAll("play, shop, locker")) return GameState.UNKNOWN
+        if (!hasAll("play", "shop", "locker")) return GameState.UNKNOWN
 
         // Otherwise we are in the lobby, but check if we are in a specific subscreen, like shop or locker.
         return when {
