@@ -18,16 +18,12 @@ suspend fun main() {
     performPlatformCheck()
 
     val ocrEngine = OCREngine()
-    val screenCapturer = ScreenCapturer()
-    val gameStatePoller = GameStatePoller(ocrEngine, screenCapturer)
+    val gameStatePoller = GameStatePoller(ocrEngine)
 
     registerShutdownHook(ocrEngine, gameStatePoller)
 
     // Register GameStatePoller subscribers.
-    gameStatePoller.subscribe(listOf(
-        screenCapturer,
-        AudioPlayer(AudioTrack.FortniteOGClassic)
-    ))
+    gameStatePoller.subscribe(listOf(AudioPlayer(AudioTrack.FortniteOGClassic)))
 
     logger.info { "$appName initialized!" }
 

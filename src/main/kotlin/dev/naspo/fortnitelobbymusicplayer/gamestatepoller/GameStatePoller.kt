@@ -18,8 +18,7 @@ import kotlin.time.Duration.Companion.seconds
  * Responsible for polling the live game state of Fortnite.
  */
 class GameStatePoller(
-    private val ocrEngine: OCREngine,
-    private val screenCapturer: ScreenCapturer
+    private val ocrEngine: OCREngine
 ) {
 
     private var currentGameState: GameState? = null
@@ -92,8 +91,8 @@ class GameStatePoller(
      * and using the OCR to analyze it to determine the current game state.
      */
     private fun getCurrentGameState(): GameState? {
-        val screenCapture: BufferedImage = screenCapturer.captureScreen()
-        val ocrResult = ocrEngine.doOCR(screenCapture)
+        val screenCaptures: List<BufferedImage> = ScreenCapturer.captureScreen()
+        val ocrResult = ocrEngine.doOCR(screenCapture) // TODO: fix
 
         ocrResult.fold(
             onSuccess = { return analyzeOCRResult(it) },
