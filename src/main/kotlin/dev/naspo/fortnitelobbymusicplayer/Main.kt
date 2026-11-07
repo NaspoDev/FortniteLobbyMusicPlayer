@@ -16,12 +16,12 @@ val logger = KotlinLogging.logger { }
 
 suspend fun main() {
     performPlatformCheck()
-    OCREngine.initOCR()
 
+    val ocrEngine = OCREngine()
     val screenCapturer = ScreenCapturer()
     val gameStatePoller = GameStatePoller(screenCapturer)
 
-    registerShutdownHook(gameStatePoller)
+    registerShutdownHook(ocrEngine, gameStatePoller)
 
     // Register GameStatePoller subscribers.
     gameStatePoller.subscribe(listOf(
@@ -49,12 +49,12 @@ private fun performPlatformCheck() {
 /**
  * Register's a shutdown hook to execute logic upon program shutdown.
  */
-private fun registerShutdownHook(gameStatePoller: GameStatePoller) {
+private fun registerShutdownHook(ocrEngine: OCREngine, gameStatePoller: GameStatePoller) {
     Runtime.getRuntime().addShutdownHook(Thread {
         runBlocking {
             logger.info { "Terminating $appName..." }
             gameStatePoller.stopPollingAndWait()
-            OCREngine.runOCRCleanup()
+            ocrEngine.close()
             logger.info { "$appName terminated. Goodbye!" }
         }
     })

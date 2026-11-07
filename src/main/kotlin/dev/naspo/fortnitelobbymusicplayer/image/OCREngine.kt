@@ -14,20 +14,21 @@ import kotlin.io.path.deleteRecursively
 
 /**
  * Facade for interacting with our OCR engine, Tesseract.
+ *
+ * Constructing an instance writes the bundled OCR data to disk so Tesseract can read it from disk.
+ * Call [close] when done to delete that data.
  */
-object OCREngine {
+class OCREngine: AutoCloseable {
 
     private val tesseract = Tesseract()
 
     /**
-     * Initialize the OCR to prepare it for use.
+     * Initializes the OCR to prepare it for use.
      *
      * This will write the OCR data that Tesseract needs to perform its duties to disk.
      * This data is bundled with the application, but Tesseract needs to physically read from disk, hence why we do this.
-     *
-     * You can call [runOCRCleanup] when done with the OCR to delete this data from disk.
      */
-    fun initOCR() {
+    init {
         AppPaths.tessDataDir.createDirectories()
 
         // Get the Tesseract trained data file bundled with the program from the classpath.
@@ -63,7 +64,7 @@ object OCREngine {
      * Delete the temporary OCR data files written to the disk.
      */
     @OptIn(ExperimentalPathApi::class)  // deleteRecursively is experimental at the time of writing this.
-    fun runOCRCleanup() {
+    override fun close() {
         logger.info { "Running OCR cleanup." }
         AppPaths.appDataDir.deleteRecursively()
     }
