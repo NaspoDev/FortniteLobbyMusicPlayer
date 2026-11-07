@@ -90,9 +90,9 @@ class GameStatePoller(
      * This will go through the process of taking a screenshot of the current screen,
      * and using the OCR to analyze it to determine the current game state.
      */
-    private fun getCurrentGameState(): GameState? {
+    private suspend fun getCurrentGameState(): GameState? {
         val screenCaptures: List<BufferedImage> = ScreenCapturer.captureScreen()
-        val ocrResult = ocrEngine.doOCR(screenCapture) // TODO: fix
+        val ocrResult = ocrEngine.ocrAll(screenCaptures)
 
         ocrResult.fold(
             onSuccess = { return analyzeOCRResult(it) },

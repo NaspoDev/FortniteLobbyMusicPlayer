@@ -1,6 +1,15 @@
 package dev.naspo.fortnitelobbymusicplayer.image
 
 import dev.naspo.fortnitelobbymusicplayer.logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.sourceforge.tess4j.Tesseract
 import net.sourceforge.tess4j.TesseractException
 import java.awt.image.BufferedImage
@@ -19,9 +28,6 @@ import kotlin.io.path.deleteRecursively
  * Call [close] when done to delete that data.
  */
 class OCREngine: AutoCloseable {
-
-    private val tesseract = Tesseract()
-
     /**
      * Initializes the OCR to prepare it for use.
      *
@@ -43,7 +49,6 @@ class OCREngine: AutoCloseable {
                 StandardCopyOption.REPLACE_EXISTING)
         }
 
-        tesseract.setDatapath(AppPaths.tessDataDir.absolutePathString())
         logger.info { "OCR initialized." }
     }
 
@@ -52,12 +57,41 @@ class OCREngine: AutoCloseable {
      *
      * @return A [Result] object containing either the successful result as a String, or an error.
      */
-    fun doOCR(image: BufferedImage): Result<String> {
-        return try {
+    suspend fun doOCR(image: BufferedImage): Result<String> = withContext(Dispatchers.Default) {
+        try {
+            // Since a Tesseract instance on its own is not thread-safe, we need to create a new instance
+            // per OCR operation to achieve thread-safety.
+            val tesseract: Tesseract = newTesseract()
             Result.success(tesseract.doOCR(image))
         } catch (e: TesseractException) {
             Result.failure(e)
         }
+    }
+
+    /**
+     * Performs OCR on a list of images and returns the results as a single joint string.
+     *
+     * @return The joined OCR results of all the images, separated by a space ' ' in the resulting string.
+     */
+    suspend fun ocrAll(images: List<BufferedImage>): Result<String> = coroutineScope {
+        val ocrResults: List<Result<String>> = images.map {
+            async { doOCR(it) }
+        }.awaitAll()
+
+        val filteredResults: List<String> = ocrResults.map { result ->
+            result.getOrElse { return@coroutineScope Result.failure(it) }
+        }
+
+        Result.success(filteredResults.joinToString(" "))
+    }
+
+    /**
+     * Initializes and configures a new [Tesseract] instance for use.
+     */
+    private fun newTesseract(): Tesseract {
+        val instance = Tesseract()
+        instance.setDatapath(AppPaths.tessDataDir.absolutePathString())
+        return instance
     }
 
     /**
