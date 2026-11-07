@@ -19,7 +19,7 @@ suspend fun main() {
 
     val ocrEngine = OCREngine()
     val screenCapturer = ScreenCapturer()
-    val gameStatePoller = GameStatePoller(screenCapturer)
+    val gameStatePoller = GameStatePoller(ocrEngine, screenCapturer)
 
     registerShutdownHook(ocrEngine, gameStatePoller)
 
