@@ -35,7 +35,7 @@ Once it's determined that you are in the lobby, it will start playing the music.
 
 **Steps:**
 1. Build the app with `./gradlew build`.
-2. Run the build output (the jar) with `java -jar <output_file>.jar`.\
+2. Run the build output (the jar) with `java -jar <output_file>.jar`.
 3. Play Fortnite and watch it work!
 
 # Libraries Used
