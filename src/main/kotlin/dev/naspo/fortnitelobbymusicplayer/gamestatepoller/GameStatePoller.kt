@@ -6,7 +6,6 @@ import dev.naspo.fortnitelobbymusicplayer.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -14,24 +13,26 @@ import kotlinx.coroutines.launch
 import java.awt.image.BufferedImage
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.measureTime
 
 /**
  * Responsible for polling the live game state of Fortnite.
  */
-object GameStatePoller {
+class GameStatePoller(
+    private val screenCapturer: ScreenCapturer
+) {
 
     private var currentGameState: GameState? = null
-    private var gameStateSubscribers = mutableListOf<GameStateSubscriber>()
+    private val gameStateSubscribers = mutableListOf<GameStateSubscriber>()
     private val scope = CoroutineScope(Dispatchers.Default)
     private var pollingJob: Job? = null
+    /** How often the game state should be polled. */
     private val pollingRate: Duration = 1.seconds
 
     /**
-     * Subscribes a [GameStateSubscriber] to receive game state updates via [GameStateSubscriber.onStateChange].
+     * Subscribes a list of [GameStateSubscriber] to receive game state updates via [GameStateSubscriber.onStateChange].
      */
-    fun subscribe(subscriber: GameStateSubscriber) {
-        gameStateSubscribers.add(subscriber)
+    fun subscribe(subscribers: List<GameStateSubscriber>) {
+        subscribers.forEach { gameStateSubscribers.add(it) }
     }
 
     /**
@@ -90,7 +91,7 @@ object GameStatePoller {
      * and using the OCR to analyze it to determine the current game state.
      */
     private fun getCurrentGameState(): GameState? {
-        val screenCapture: BufferedImage = ScreenCapturer.captureScreen()
+        val screenCapture: BufferedImage = screenCapturer.captureScreen()
         val ocrResult = OCREngine.doOCR(screenCapture)
 
         ocrResult.fold(

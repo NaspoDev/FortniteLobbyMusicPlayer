@@ -4,6 +4,7 @@ import dev.naspo.fortnitelobbymusicplayer.audio.AudioPlayer
 import dev.naspo.fortnitelobbymusicplayer.audio.AudioTrack
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameStatePoller
 import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
+import dev.naspo.fortnitelobbymusicplayer.image.ScreenCapturer
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
 import java.awt.image.BufferedImage
@@ -14,18 +15,25 @@ const val appName: String = "Fortnite Lobby Music Player"
 val logger = KotlinLogging.logger { }
 
 suspend fun main() {
-    // App init
     performPlatformCheck()
-    registerShutdownHook()
     OCREngine.initOCR()
+
+    val screenCapturer = ScreenCapturer()
+    val gameStatePoller = GameStatePoller(screenCapturer)
+
+    registerShutdownHook(gameStatePoller)
+
     // Register GameStatePoller subscribers.
-    GameStatePoller.subscribe(AudioPlayer(AudioTrack.FortniteOGClassic))
+    gameStatePoller.subscribe(listOf(
+        screenCapturer,
+        AudioPlayer(AudioTrack.FortniteOGClassic)
+    ))
 
     logger.info { "$appName initialized!" }
 
     // Start
-    GameStatePoller.beginPolling()
-    GameStatePoller.awaitPolling()
+    gameStatePoller.beginPolling()
+    gameStatePoller.awaitPolling()
 }
 
 // If not on Windows, terminate the program.
@@ -33,7 +41,7 @@ private fun performPlatformCheck() {
     fun isOnWindows() = System.getProperty("os.name").lowercase().startsWith("win")
 
     if (!isOnWindows()) {
-        logger.error { "Fortnite Lobby Music Player must be running on Windows." }
+        logger.error { "$appName must be running on Windows." }
         exitProcess(1)
     }
 }
@@ -41,11 +49,11 @@ private fun performPlatformCheck() {
 /**
  * Register's a shutdown hook to execute logic upon program shutdown.
  */
-private fun registerShutdownHook() {
+private fun registerShutdownHook(gameStatePoller: GameStatePoller) {
     Runtime.getRuntime().addShutdownHook(Thread {
         runBlocking {
             logger.info { "Terminating $appName..." }
-            GameStatePoller.stopPollingAndWait()
+            gameStatePoller.stopPollingAndWait()
             OCREngine.runOCRCleanup()
             logger.info { "$appName terminated. Goodbye!" }
         }
