@@ -106,26 +106,6 @@ class GameStatePoller(
     }
 
     /**
-     * Analyzes raw OCR result to determine the game state.
-     */
-    internal fun analyzeOCRResult(ocrResult: String): GameState {
-        val ocrResult = ocrResult.lowercase()
-
-        fun hasAll(text: List<String>) = text.all {it in ocrResult}
-
-        // If it doesn't have any of the main navbar lobby text, then return UNKNOWN.
-        if (!hasAll(GameState.LOBBY.triggerText)) return GameState.UNKNOWN
-
-        // Otherwise we are in the lobby, but check if we are in a specific subscreen, like shop or locker.
-        return when {
-            hasAll(GameState.SHOP.triggerText) -> GameState.SHOP
-            hasAll(GameState.LOCKER.triggerText) -> GameState.LOCKER
-            // If its none of the specific lobby subscreens, then return LOBBY.
-            else -> GameState.LOBBY
-        }
-    }
-
-    /**
      * Broadcast that the game state has changed to all [gameStateSubscribers].
      */
     private fun broadcastGameStateChange(gameState: GameState) {
