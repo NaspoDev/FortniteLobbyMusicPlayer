@@ -6,6 +6,7 @@ import dev.naspo.fortnitelobbymusicplayer.logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -23,7 +24,7 @@ class GameStatePoller(
 
     private var currentGameState: GameState? = null
     private val gameStateSubscribers = mutableListOf<GameStateSubscriber>()
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var pollingJob: Job? = null
     /** How often the game state should be polled. */
     private val pollingRate: Duration = 1.seconds
