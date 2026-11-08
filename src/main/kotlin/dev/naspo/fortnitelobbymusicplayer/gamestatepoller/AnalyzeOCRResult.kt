@@ -32,8 +32,23 @@ fun analyzeOCRResult(ocrResult: String): GameState {
  * @param gameState The [GameState] to check.
  * @param ocrResult The raw OCR result.
  */
-private fun canConsiderGameStateActive(gameState: GameState, ocrResult: String): Boolean =
-    passesTriggerTextCheck(gameState, ocrResult) && passesForbiddenTriggerTextCheck(gameState, ocrResult)
+private fun canConsiderGameStateActive(gameState: GameState, ocrResult: String): Boolean {
+    // TODO: This is temporary edge-case logic for SHOP game state check. Move it elsewhere
+    if (gameState == GameState.SHOP) {
+        if (!passesTriggerTextCheck(gameState, ocrResult)) return false
+
+        if (passesForbiddenTriggerTextCheck(gameState, ocrResult)) {
+            return true
+        } else if ("about shop" in ocrResult || "support-a-creator" in ocrResult || "aboutshop" in ocrResult) {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        // Regular check logic
+        return passesTriggerTextCheck(gameState, ocrResult) && passesForbiddenTriggerTextCheck(gameState, ocrResult)
+    }
+}
 
 /**
  * Returns true if the provided [GameState]'s trigger text appears at least [TRIGGER_TEXT_MATCH_THRESHOLD]
