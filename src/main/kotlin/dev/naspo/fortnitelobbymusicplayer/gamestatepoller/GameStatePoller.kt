@@ -108,9 +108,6 @@ class GameStatePoller(
     /**
      * Broadcast that the game state has changed to all [gameStateSubscribers].
      */
-    private fun broadcastGameStateChange(gameState: GameState) {
-        gameStateSubscribers.forEach {
-            it.onStateChange(gameState)
-        }
-    }
+    private fun broadcastGameStateChange(gameState: GameState) =
+        gameStateSubscribers.forEach { it.onStateChange(gameState) }
 }
