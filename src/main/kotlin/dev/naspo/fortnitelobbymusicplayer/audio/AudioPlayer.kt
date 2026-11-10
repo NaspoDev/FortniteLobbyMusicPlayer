@@ -6,6 +6,8 @@ import dev.naspo.fortnitelobbymusicplayer.logger
 import java.net.URL
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.Clip
+import javax.sound.sampled.FloatControl
+import kotlin.math.log10
 
 /**
  * Handles playing audio.
@@ -16,6 +18,10 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     // Using Java's built-in audio playing system.
     // Using Clip, which loads the entire audio file into memory
     private val clip: Clip = AudioSystem.getClip()
+
+    // The volume of the audio on a 0.0 - 1.0 scale.
+    private val volume = 0.04f
+
     // The current game state.
     private var gameState: GameState = GameState.UNKNOWN
 
@@ -27,6 +33,10 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
         // Setup Clip with AudioInputStream
         val audioStream = AudioSystem.getAudioInputStream(resource)
         clip.open(audioStream)
+
+        // Configure volume
+        val gain: FloatControl = clip.getControl(FloatControl.Type.MASTER_GAIN) as FloatControl
+        gain.setValue(20f * log10(volume))  // converts our 0-1 scale volume to decibel.
     }
 
     /**
