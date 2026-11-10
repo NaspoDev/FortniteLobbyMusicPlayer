@@ -49,7 +49,7 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      */
     private fun play() {
         logger.info { "Playing ${audioTrack.readableName}..." }
-        clip.start()  // start() is non-blocking
+        clip.loop(Clip.LOOP_CONTINUOUSLY)
     }
 
     /**
