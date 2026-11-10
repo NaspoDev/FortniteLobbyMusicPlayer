@@ -17,7 +17,9 @@ enum class GameState(
             // Main lobby screen
             "play", "shop", "locker", "passes", "quests", "compete", "career", "chat", "emote", "back",
             // Shop
-            "support-a-creator", "about shop"
+            "support-a-creator", "about shop",
+            // Game mode selection grid
+            "continue playing", "custom key", "go to lobby", "back to top"
             )
     ),
 
