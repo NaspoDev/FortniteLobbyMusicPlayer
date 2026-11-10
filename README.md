@@ -74,5 +74,8 @@ available to the JVM via Tess4J.
 - [Tess4J Homepage](https://tess4j.sourceforge.net/)
 - [Tess4J Maven Repo](https://mvnrepository.com/artifact/net.sourceforge.tess4j/tess4j)
 
+## JNativeHook
+[JNativeHook](https://github.com/kwhat/jnativehook) allows the program to listen for keyboard inputs.
+
 ## kotlin-logging
 [kotlin-logging](https://github.com/oshai/kotlin-logging#) for logging, using [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple) as its backend.
