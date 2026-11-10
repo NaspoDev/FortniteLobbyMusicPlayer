@@ -39,7 +39,7 @@ different colours, unusual fonts, strong highlights, etc... So I couldn't get en
 distinguish between the main lobby and the shop and locker screens.
 
 ### Compromise (Solution)
-_Coming soon..._
+You can manually pause and resume the music with the standard PLAY/PAUSE media controls on your keyboard.
 
 ## Notable Optimization
 Instead of taking a full screenshot of the entire screen, two screenshots of a small sliver of the top
@@ -63,6 +63,8 @@ down to **130 milliseconds**.
 1. Build the app with `./gradlew build`.
 2. Run the build output (the jar) with `java -jar <output_file>`.
 3. Play Fortnite and watch it work!
+4. If you want to pause and resume the music for any reason (ex. while you're in the shop or locker),
+you can use the standard PLAY/PAUSE media controls on your keyboard.
 
 # Libraries Used
 
