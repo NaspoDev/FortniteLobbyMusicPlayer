@@ -13,7 +13,12 @@ enum class GameState(
 ) {
     /** In the lobby. */
     LOBBY(
-        listOf("play", "shop", "locker", "passes", "quests", "compete", "career", "chat", "emote", "back")
+        listOf(
+            // Main lobby screen
+            "play", "shop", "locker", "passes", "quests", "compete", "career", "chat", "emote", "back",
+            // Shop
+            "support-a-creator", "about shop"
+            )
     ),
 
     /** The exact state of the game is unknown/we don't care about it.  */
