@@ -21,6 +21,9 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.20")
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    // JNativeHook - Keyboard input listener
+    // Source: https://mvnrepository.com/artifact/com.github.kwhat/jnativehook
+    implementation("com.github.kwhat:jnativehook:2.2.2")
 }
 
 kotlin {

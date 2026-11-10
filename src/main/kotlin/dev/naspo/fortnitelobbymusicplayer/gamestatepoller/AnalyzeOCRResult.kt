@@ -15,7 +15,7 @@ private const val TRIGGER_TEXT_MATCH_THRESHOLD = 3
  */
 fun analyzeOCRResult(ocrResult: String): GameState {
     val ocrResult = ocrResult.lowercase()
-    logger.info {"OCR Result: \n$ocrResult"}  // TODO: remove this when done debugging
+//    logger.info {"OCR Result: \n$ocrResult"}  // TODO: remove this when done debugging
 
     return when {
         passesTriggerTextCheck(GameState.LOBBY, ocrResult) -> GameState.LOBBY

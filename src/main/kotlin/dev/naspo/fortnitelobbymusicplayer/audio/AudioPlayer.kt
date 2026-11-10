@@ -28,10 +28,18 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     }
 
     /**
+     * Plays or pauses music playback.
+     *
+     * If the music is already playing, it will pause.
+     * If the music is paused, it will play.
+     */
+    fun togglePlay() = if (clip.isRunning) pause() else play()
+
+    /**
      * Play the audio track.
      * If previously paused, it will resume where it left off.
      */
-    fun play() {
+    private fun play() {
         logger.info { "Playing ${audioTrack.readableName}..." }
         clip.start()  // start() is non-blocking
     }
@@ -39,7 +47,7 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     /**
      * Pause the audio track.
      */
-    fun pause() {
+    private fun pause() {
         clip.stop()
     }
 
@@ -47,7 +55,7 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      * Stops playing the audio track.
      * This operation resets playback to the start of the audio track.
      */
-    fun stop() {
+    private fun stop() {
         clip.stop()
         clip.framePosition = 0
     }
