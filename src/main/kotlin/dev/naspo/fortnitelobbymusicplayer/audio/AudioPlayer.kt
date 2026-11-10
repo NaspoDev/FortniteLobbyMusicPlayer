@@ -16,6 +16,8 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     // Using Java's built-in audio playing system.
     // Using Clip, which loads the entire audio file into memory
     private val clip: Clip = AudioSystem.getClip()
+    // The current game state.
+    private var gameState: GameState = GameState.UNKNOWN
 
     init {
         // Get audio file resource from classpath.
@@ -31,9 +33,15 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      * Plays or pauses music playback.
      *
      * If the music is already playing, it will pause.
-     * If the music is paused, it will play.
+     * If the music is paused, it will play, as long as the current [GameState] is [GameState.LOBBY].
      */
-    fun togglePlay() = if (clip.isRunning) pause() else play()
+    fun togglePlay() {
+        if (clip.isRunning) {
+            pause()
+        } else {
+            if (gameState == GameState.LOBBY) play()
+        }
+    }
 
     /**
      * Play the audio track.
@@ -61,6 +69,7 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
     }
 
     override fun onStateChange(gameState: GameState) {
+        this.gameState = gameState
         when (gameState) {
             GameState.LOBBY -> play()
             GameState.UNKNOWN -> stop()

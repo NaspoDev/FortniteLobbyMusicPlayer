@@ -22,12 +22,14 @@ suspend fun main() {
 
     val ocrEngine = OCREngine()
     val gameStatePoller = GameStatePoller(ocrEngine)
+    val audioPlayer = AudioPlayer(AudioTrack.FortniteOGClassic)
+    val globalKeyListener = GlobalKeyListener(audioPlayer)
 
     registerShutdownHook(ocrEngine, gameStatePoller)
-    registerKeyboardInputListener()
+    registerKeyboardInputListener(globalKeyListener)
 
     // Register GameStatePoller subscribers.
-    gameStatePoller.subscribe(listOf(AudioPlayer(AudioTrack.FortniteOGClassic)))
+    gameStatePoller.subscribe(listOf(audioPlayer))
 
     logger.info { "$appName initialized!" }
 
@@ -50,7 +52,7 @@ private fun performPlatformCheck() {
  * Register JNativeHook (Keyboard Input Listener).
  * If this fails the program will be terminated.
  */
-private fun registerKeyboardInputListener() {
+private fun registerKeyboardInputListener(globalKeyListener: GlobalKeyListener) {
     try {
         GlobalScreen.registerNativeHook()
     } catch (e: NativeHookException) {
@@ -59,7 +61,7 @@ private fun registerKeyboardInputListener() {
         exitProcess(1)
     }
 
-    GlobalScreen.addNativeKeyListener(GlobalKeyListener())
+    GlobalScreen.addNativeKeyListener(globalKeyListener)
 }
 
 /**
