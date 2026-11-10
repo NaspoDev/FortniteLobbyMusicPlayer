@@ -65,6 +65,19 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
      */
     private fun stop() {
         clip.stop()
+
+        /*
+        flush() clears the buffer.
+        Since we will reset the frame position back to 0 in our stop process, we call flush() to ensure a truly
+        clean start when play() is called again.
+
+        Before calling flush(), when audio was played again after stopping it and setting framePosition to 0,
+        it didn't quite sound like it was playing from the very beginning, it sounded like it skipped a frame or two.
+        Calling flush solved this issue.
+         */
+        clip.flush()
+
+        // Reset the audio track to play from the start.
         clip.framePosition = 0
     }
 
