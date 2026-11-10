@@ -19,8 +19,9 @@ enum class GameState(
             // Shop
             "support-a-creator", "about shop",
             // Game mode selection grid
-            "continue playing", "custom key", "go to lobby", "back to top"
-            )
+            "custom key", "go to lobby", "back to top", "continue playing", "for you", "top 10", "battle royale",
+            "featured by epic", "epic picks"
+        )
     ),
 
     /** The exact state of the game is unknown/we don't care about it.  */
