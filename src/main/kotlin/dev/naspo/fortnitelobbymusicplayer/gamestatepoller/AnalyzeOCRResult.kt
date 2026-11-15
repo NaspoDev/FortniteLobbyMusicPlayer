@@ -9,7 +9,6 @@ import dev.naspo.fortnitelobbymusicplayer.logger
  */
 fun analyzeOCRResult(ocrResult: String): GameState {
     val ocrResult = ocrResult.lowercase()
-    logger.info {"OCR Result: \n$ocrResult"}  // TODO: remove this when done debugging
 
     return when {
         passesTriggerTextCheck(GameState.LOBBY, ocrResult) -> GameState.LOBBY
@@ -28,9 +27,5 @@ fun analyzeOCRResult(ocrResult: String): GameState {
  * @param gameState The [GameState] to check.
  * @param ocrResult The raw OCR result.
  */
-private fun passesTriggerTextCheck(gameState: GameState, ocrResult: String): Boolean {
-    logger.info { "In passesTriggerTextCheck() for $gameState" }
-    val temp = gameState.triggerText.count { it in ocrResult } >= gameState.matchThreshold
-    logger.info { "Passed: $temp" }
-    return temp
-}
+private fun passesTriggerTextCheck(gameState: GameState, ocrResult: String): Boolean =
+    gameState.triggerText.count { it in ocrResult } >= gameState.matchThreshold
