@@ -1,4 +1,4 @@
-# Fortnite Lobby Music Player [IN DEVELOPMENT]
+# Fortnite Lobby Music Player
 
 A program that detects when you're in the Fortnite lobby and plays your desired music.
 
