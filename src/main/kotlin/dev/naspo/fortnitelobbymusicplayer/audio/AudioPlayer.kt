@@ -95,7 +95,8 @@ class AudioPlayer(private val audioTrack: AudioTrack) : GameStateSubscriber {
         this.gameState = gameState
         when (gameState) {
             GameState.LOBBY -> play()
-            GameState.UNKNOWN -> stop()
+            GameState.CONNECTING_TO_GAME -> stop()
+            GameState.UNKNOWN -> Unit
         }
     }
 }
