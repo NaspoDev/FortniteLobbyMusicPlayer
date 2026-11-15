@@ -6,13 +6,9 @@ import dev.naspo.fortnitelobbymusicplayer.audio.AudioPlayer
 import dev.naspo.fortnitelobbymusicplayer.audio.AudioTrack
 import dev.naspo.fortnitelobbymusicplayer.gamestatepoller.GameStatePoller
 import dev.naspo.fortnitelobbymusicplayer.image.OCREngine
-import dev.naspo.fortnitelobbymusicplayer.image.ScreenCapturer
 import dev.naspo.fortnitelobbymusicplayer.keyboardinput.GlobalKeyListener
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
-import kotlin.io.path.Path
 import kotlin.system.exitProcess
 
 const val appName: String = "Fortnite Lobby Music Player"
